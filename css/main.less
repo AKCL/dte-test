@@ -1,3 +1,17 @@
+
+@font-face {
+    font-family: 'venera700';
+    src: url('../fonts/venera-700-webfont.eot');
+    src: url('../fonts/venera-700-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/venera-700-webfont.woff2') format('woff2'),
+         url('../fonts/venera-700-webfont.woff') format('woff'),
+         url('../fonts/venera-700-webfont.ttf') format('truetype'),
+         url('../fonts/venera-700-webfont.svg#venera700') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
 /*! HTML5 Boilerplate v4.3.0 | MIT License | http://h5bp.com/ */
 
 html,
@@ -161,14 +175,50 @@ html, body{
 	color: white;
 	margin: 0;
 	padding: 0;
+	background-color: black;
+}
+
+header{
+	height: 100px;
+	position: fixed;
+	top: 0;
+	left: 0;
+	z-index: 2000;
+}
+
+h1, h2{
+	font-family: venera700, helvetica, arial;
+}
+
+h2{
+	font-size: 3em;
+	text-align: center;
+}
+
+.start-container{
+	position: relative;
+	width: 100%;
+	box-sizing: border-box;
+	padding: 200px 25%;
+	text-align:center;
 }
 
 .quiz-container{
 	width: 100%;
+	display: none;
 	position: absolute;
-	top: 0;
+	z-index: 1000;
+	top:0;
 	left: 0;
-	background-color: black;
+}
+
+.end-container{
+	position: relative;
+	display: none;
+	width: 100%;
+	box-sizing: border-box;
+	padding: 200px 25%;
+	text-align:center;
 }
 
 .box{
@@ -179,6 +229,12 @@ html, body{
 .content{
 	margin: 0 auto;
 	width: 90%;
+}
+
+.counter{
+	position: absolute;
+	top: 25px;
+	right: 25%;
 }
 
 .feature{

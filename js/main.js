@@ -1,4 +1,6 @@
-// function to randomize elements
+// PLugins //
+
+// function to randomize display order of answer choices elements
 (function($) {
   
   $.fn.randomize = function(tree, childElem) {
@@ -17,26 +19,62 @@
 
 })(jQuery);
 
-
 $(document).ready(function(){
 
-	var $container = $('.quiz-container'),
-	$box = $('.box'),
+	var $quizContainer = $('.quiz-container'),
+	$box,
+	$startContainer = $('.start-container'),
+	$endContainer = $('.end-container'),
+	$start = $(' a.start'),
+	JSONObj,
 	objIndex,
-	JSONLength = 3-1,
+	JSONLength, // length of array - 1 // 
 	size;
+
+	var _QUESTION  = $("#question-template").html();
+	var questionTemplate = Handlebars.compile(_QUESTION);
+	
+	Handlebars.registerHelper('format', function(item) {
+       item = Handlebars.Utils.escapeExpression(item);
+    	item = item.replace(/(\r\n|\n|\r)/gm, '<p>');
+    	return new Handlebars.SafeString(item);
+    });
 
 
 	function size(){
+		$box = $('.box');
 	    var height = Math.max($(document).height(), $(window).height());
 		//var width = Math.max (window.innerWidth,  body.clientWidth)	
-		$container.height(height);
+		$box.height(height);
+		// apply backgrounds?
 	}
 
-	function init(){
+	// set page up ////
+
+	function nextQuestion(){
+		$box.fadeOut(500);
+		if  (objIndex < JSONLength){// advance the frames
+			$box.eq(objIndex)
+				.backstretch("img/moon.jpg")
+				.randomize(".question .answers", "a")
+				.delay(500)
+				.fadeIn("fast");
+			objIndex++;
+		} else{
+			$quizContainer.hide();
+			$endContainer.delay(500).fadeIn(500);
+		}
+	}
+
+	function init(JSONObj){
+        JSONLength = _.size(JSONObj.Questions);
+        console.log(JSONLength);
 		objIndex=0;
-		size();
-		$box.eq(objIndex).randomize(".question .answers", "a").show();
+		_.defer(size); // wait a moment until new DOM elements loaded
+		$quizContainer.show().append (questionTemplate(JSONObj));
+		
+		// load first - temp
+		// apply backgrounds to all boxes
 		// load stuff
 	}
 
@@ -49,25 +87,24 @@ $(document).ready(function(){
 		alert(response);
 	}
 
-	function nextQuestion(){
-	// advance the frames
-		$box.hide();
-		objIndex++;
-		$box.eq(objIndex).fadeIn("fast");
-		console.log("correct");
-	}
+	$start.click(function(e){
+		e.preventDefault();
+		$startContainer.fadeOut(500);
+		nextQuestion();
+	})
 
 	function checkAnswer(response){
 	 	response ==""||null ? nextQuestion() : wrongAnswer(response);
 	}
 
-	init();
+    $.getJSON( "quiz.json?nocache=" + (new Date()).getTime(), function( data ) {
+      JSONObj = data;
+      init(JSONObj);	
+  	});
 
 	$( window, document ).resize(function() {
 		size();
 	});
-
-
 
 });
 
