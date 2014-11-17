@@ -1,4 +1,4 @@
-
+@import url('elements.less');
 @font-face {
     font-family: 'venera700';
     src: url('../fonts/venera-700-webfont.eot');
@@ -23,8 +23,8 @@ textarea {
 }
 
 html {
-    font-size: 1em;
-    line-height: 1.4;
+    font-size: 100%;
+    line-height: 1.5;
 }
 
 ::-moz-selection {
@@ -75,90 +75,10 @@ textarea {
    Author: Jonathan Verrecchia - verekia.com/initializr/responsive-template
    ========================================================================== */
 
-body {
-    font: 16px/26px Helvetica, Helvetica Neue, Arial;
-}
+// body {
+//     font: 20px/30px Helvetica, Helvetica Neue, Arial;
+// }
 
-.wrapper {
-    width: 90%;
-    margin: 0 5%;
-}
-
-/* ===================
-    ALL: Orange Theme
-   =================== */
-
-.header-container {
-    border-bottom: 20px solid #e44d26;
-}
-
-.footer-container,
-.main aside {
-    border-top: 20px solid #e44d26;
-}
-
-.header-container,
-.footer-container,
-.main aside {
-    background: #f16529;
-}
-
-.title {
-    color: white;
-}
-
-/* ==============
-    MOBILE: Menu
-   ============== */
-
-nav ul {
-    margin: 0;
-    padding: 0;
-}
-
-nav a {
-    display: block;
-    margin-bottom: 10px;
-    padding: 15px 0;
-
-    text-align: center;
-    text-decoration: none;
-    font-weight: bold;
-
-    color: white;
-    background: #e44d26;
-}
-
-nav a:hover,
-nav a:visited {
-    color: white;
-}
-
-nav a:hover {
-    text-decoration: underline;
-}
-
-/* ==============
-    MOBILE: Main
-   ============== */
-
-.main {
-    padding: 30px 0;
-}
-
-.main article h1 {
-    font-size: 2em;
-}
-
-.main aside {
-    color: white;
-    padding: 0px 5% 10px;
-}
-
-.footer-container footer {
-    color: white;
-    padding: 20px 0;
-}
 
 /* ===============
     ALL: IE Fixes
@@ -171,95 +91,165 @@ nav a:hover {
 /* ==========================================================================
    Author's custom styles
    ========================================================================== */
-html, body{
-	color: white;
+// settings ////////////////////////////////////////
+
+@mainTextColor: white;
+@overlayColour: rgba(0,0,0,.9); // overlay colour //
+@startImageWidth: 250px; // logo or home start page image //
+@endImageWidth: 250px; // logo or home start page image //
+@btnBgrnd: orange; //
+@btnTextcolor: white; //
+
+.button(@btnBgrnd: orange, @btnTextColor: white){
+    font-family: venera700, helvetica, arial;
+    font-size: .75em;
+    line-height: 1.5em;
+    background-color: @btnBgrnd;
+    color: @btnTextcolor;
+    display: block;
+    text-decoration: none;
+    padding: .666em 1em;
+    .rounded(10px);
+    box-sizing: border-box;
+    transition: all .333s;
+}
+
+body{
+	color: @mainTextColor;
 	margin: 0;
 	padding: 0;
-	background-color: black;
+    background-color: black;
 }
 
-header{
-	height: 100px;
-	position: fixed;
-	top: 0;
-	left: 0;
-	z-index: 2000;
+.backstretch{
+    display: none;
 }
 
-h1, h2{
+// footer{
+//     height: 120px;
+//     text-align: center;
+//     color: orange;
+//     position: absolute;
+//     bottom: 0;
+//     width: 100%;
+// }
+
+h1, h2, h3{
 	font-family: venera700, helvetica, arial;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    color: orange;
+}
+
+h1{
+    font-size: 3.25em;
 }
 
 h2{
-	font-size: 3em;
-	text-align: center;
+	font-size: 2.333em;
+}
+
+h3{
+    font-size: 1.666em; 
+}
+
+.wrapper{
+    margin: 1em auto;
+    width: 92.5%;
+    max-width: 1140px;
 }
 
 .start-container{
 	position: relative;
-	width: 100%;
+    z-index: 500;
 	box-sizing: border-box;
-	padding: 200px 25%;
+	margin: 100px auto 0 auto;
 	text-align:center;
 }
 
 .quiz-container{
-	width: 100%;
 	display: none;
-	position: absolute;
+	position: relative;
 	z-index: 1000;
-	top:0;
-	left: 0;
 }
 
 .end-container{
 	position: relative;
 	display: none;
-	width: 100%;
 	box-sizing: border-box;
-	padding: 200px 25%;
+	margin: 100px auto 0 auto;
 	text-align:center;
 }
 
+.btn{
+    margin: 0 auto;
+    width: 250px;
+    .button;
+    cursor: pointer;
+}
+
+.start-container{
+    img{
+        width: @startImageWidth;
+    }
+}
+
+.end-container{
+    img{
+        width: @endImageWidth;
+    }
+}
+
 .box{
-	width: 100%;
 	display: none;	
 }
 
 .content{
-	margin: 0 auto;
-	width: 90%;
+	margin: 0 auto 1em auto;
+    padding: 0 1em;
+    box-sizing: border-box;
+    .rounded(10px);
+    background-color: @overlayColour;
 }
 
 .counter{
-	position: absolute;
-	top: 25px;
-	right: 25%;
+	display: block;
+    font-size: .3em;
+    margin-bottom: .5em;
 }
 
 .feature{
-	display: none;
+    display: none;
 	float: none;
+    width: 100%;
 }
 
 .question{
-	font-size: 20px;
-	color: red;
-	margin: 0 auto;
-	width: 90%;
+    box-sizing: border-box;
+    .rounded(10px);
+    background-color:@overlayColour;
+	margin: 0 auto 1em auto;
+    padding: 0 1em;
 	float: none;
 }
 
-.answers a, .answers a:link{
-	display: block;
-	text-decoration: none;
-	padding: 1em;
-	background-color: white;
-	border-radius: 10px;
-	box-sizing: border-box;
+.answers a, .answers a:link, .answers a:visited, .answers a:focus, .answers a:active{
+    .button;
 	margin: 1em 0;
 }
 
+.answers a:hover{
+    .button(red);
+}
+
+.fancybox-inner {
+    text-align: center;
+}
+
+.fancybox-inner .back{
+    color: orange;
+}
 
 
 /* ==========================================================================
@@ -268,90 +258,30 @@ h2{
 
 @media only screen and (min-width: 480px) {
 
-/* ====================
-    INTERMEDIATE: Menu
-   ==================== */
 
-    nav a {
-        float: left;
-        width: 27%;
-        margin: 0 1.7%;
-        padding: 25px 2%;
-        margin-bottom: 0;
-    }
-
-    nav li:first-child a {
-        margin-left: 0;
-    }
-
-    nav li:last-child a {
-        margin-right: 0;
-    }
-
-/* ========================
-    INTERMEDIATE: IE Fixes
-   ======================== */
-
-    nav ul li {
-        display: inline;
-    }
-
-    .oldie nav a {
-        margin: 0 0.7%;
-    }
 }
 
 @media only screen and (min-width: 768px) {
 
-/* ====================
-    WIDE: CSS3 Effects
-   ==================== */
+    body{font-size: 125%;}
+ 
 
-    .header-container,
-    .main aside {
-        -webkit-box-shadow: 0 5px 10px #aaa;
-           -moz-box-shadow: 0 5px 10px #aaa;
-                box-shadow: 0 5px 10px #aaa;
+    .feature{
+        display: block;
+        float: right;
+        width: 40%;
     }
 
-/* ============
-    WIDE: Menu
-   ============ */
-
-    .title {
+    .question{
+        width: 50%;
         float: left;
     }
 
-    nav {
-        float: right;
-        width: 38%;
-    }
 
-/* ============
-    WIDE: Main
-   ============ */
-
-    .main article {
-        float: left;
-        width: 57%;
-    }
-
-    .main aside {
-        float: right;
-        width: 28%;
-    }
 }
 
 @media only screen and (min-width: 1140px) {
 
-/* ===============
-    Maximal Width
-   =============== */
-
-    .wrapper {
-        width: 1026px; /* 1140px - 10% for margins */
-        margin: 0 auto;
-    }
 }
 
 /* ==========================================================================

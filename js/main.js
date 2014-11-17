@@ -19,6 +19,8 @@
 
 })(jQuery);
 
+
+
 $(document).ready(function(){
 
 	var $quizContainer = $('.quiz-container'),
@@ -28,55 +30,98 @@ $(document).ready(function(){
 	$start = $(' a.start'),
 	JSONObj,
 	objIndex,
-	JSONLength, // length of array - 1 // 
-	size;
+	JSONLength, 
+	size,
+	bgImageArray = []; // stores the background images //
+
+	$.backstretch("img/"+bgImageArray[objIndex]);
+
+	var _START  = $("#start-template").html();
+	var startTemplate = Handlebars.compile(_START);
 
 	var _QUESTION  = $("#question-template").html();
 	var questionTemplate = Handlebars.compile(_QUESTION);
+
+	var _END  = $("#end-template").html();
+	var endTemplate = Handlebars.compile(_END);
+
 	
+	// replace line return with <p> //
 	Handlebars.registerHelper('format', function(item) {
-       item = Handlebars.Utils.escapeExpression(item);
-    	item = item.replace(/(\r\n|\n|\r)/gm, '<p>');
+       	item = Handlebars.Utils.escapeExpression(item);
+    	item = item.replace(/(\n|\n)/gm, '<br>');
+    	item = item.replace(/(\r|\r)/gm, '<p>');
     	return new Handlebars.SafeString(item);
     });
 
+	// basic Math helper
+    Handlebars.registerHelper("math", function(lvalue, operator, rvalue, options) {
+    lvalue = parseFloat(lvalue);
+    rvalue = parseFloat(rvalue);
+        
+    return {
+        "+": lvalue + rvalue,
+        "-": lvalue - rvalue,
+        "*": lvalue * rvalue,
+        "/": lvalue / rvalue,
+        "%": lvalue % rvalue
+    }[operator];
+});
 
-	function size(){
-		$box = $('.box');
-	    var height = Math.max($(document).height(), $(window).height());
-		//var width = Math.max (window.innerWidth,  body.clientWidth)	
-		$box.height(height);
-		// apply backgrounds?
-	}
 
 	// set page up ////
 
+	function setUp(){
+		$box = $('.box'); //
+		$(".fancybox").fancybox({
+			maxWidth: 400,
+			closeClick: true,
+    		afterLoad   : function() {
+        	this.content = '<p>'+ $(this.element).data('response') +'</p>';
+        	this.content += '<p class="back">Back to Quiz</p>';
+    	}
+	});
+
+	}
+
 	function nextQuestion(){
-		$box.fadeOut(500);
+		$quizContainer.show();
+		$(".backstretch").fadeOut(100);
+		$box.fadeOut(100);
 		if  (objIndex < JSONLength){// advance the frames
+			$.backstretch("img/"+bgImageArray[objIndex]);
+			$(".backstretch").fadeIn("fast");
 			$box.eq(objIndex)
-				.backstretch("img/moon.jpg")
+				//.backstretch("img/"+bgImageArray[objIndex])
 				.randomize(".question .answers", "a")
-				.delay(500)
-				.fadeIn("fast");
+				.delay(200)
+				.fadeIn(100);
+				$('html,body').delay(500).animate({ scrollTop: 0 }, 'slow');
 			objIndex++;
 		} else{
+			objIndex = 0; // reset object index
+			$box.fadeOut(100);
 			$quizContainer.hide();
 			$endContainer.delay(500).fadeIn(500);
 		}
 	}
 
 	function init(JSONObj){
-        JSONLength = _.size(JSONObj.Questions);
-        console.log(JSONLength);
-		objIndex=0;
-		_.defer(size); // wait a moment until new DOM elements loaded
-		$quizContainer.show().append (questionTemplate(JSONObj));
 		
-		// load first - temp
-		// apply backgrounds to all boxes
-		// load stuff
 	}
+
+	$(document).on('click', '.start', function (e) {
+	    e.preventDefault();
+		$startContainer.fadeOut(100);
+		nextQuestion();
+	})
+
+	$(document).on('click', '.restart', function (e) {
+	    e.preventDefault();
+		$endContainer.fadeOut(100);
+		$startContainer.fadeIn(100);
+		$quizContainer.show();
+	})
 
 	$(document).on('click', '.answers a', function (e) {
 	      e.preventDefault();
@@ -84,29 +129,41 @@ $(document).ready(function(){
 	})
 
 	function wrongAnswer(response){
-		alert(response);
+		console.log("wrong");
 	}
-
-	$start.click(function(e){
-		e.preventDefault();
-		$startContainer.fadeOut(500);
-		nextQuestion();
-	})
 
 	function checkAnswer(response){
 	 	response ==""||null ? nextQuestion() : wrongAnswer(response);
 	}
 
-    $.getJSON( "quiz.json?nocache=" + (new Date()).getTime(), function( data ) {
-      JSONObj = data;
-      init(JSONObj);	
+    $.getJSON( "quiz.js?nocache=" + (new Date()).getTime(), function( data ) {
+
+	  	// create bgImageArray for each question //
+	    $.each(data.questions, function (index, questions) {
+	        bgImageArray.push(questions.background); //push values here
+	    });
+	    JSONObj = data;
+	    
+	    //apply start background to body
+	    $('body').css({'background-image':'url(img/'+ JSONObj.start[0].background+')', 'background-repeat':'no-repeat','background-size': 'cover'});
+
+        JSONLength = _.size(JSONObj.questions);
+        console.log(JSONLength);
+		objIndex=0;
+		$startContainer.append (startTemplate(JSONObj));
+		_.defer(setUp); // wait a moment until new DOM elements loaded
+		$quizContainer.append (questionTemplate(JSONObj)); // prepare quiz
+		$endContainer.append (endTemplate(JSONObj));
+		
+		// load first - temp
+		// apply backgrounds to all boxes
+		// load stuff
   	});
 
-	$( window, document ).resize(function() {
-		size();
-	});
+	// $( window).resize(function() {
+	// 	//size();
+
+	// });
 
 });
 
-
-	

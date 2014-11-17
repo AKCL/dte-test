@@ -6,9 +6,10 @@
 <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Dare to Explore</title>
-    <meta name="description" content="">
+    <title>Dare To Explore 2014 | Auckland Libraries</title>
+    <meta name="description" content="Dare To Explore 2014, Auckland Libraries">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
 
     <link rel="stylesheet" href="css/normalize.min.css">
     <link rel="stylesheet" href="css/main.css">
@@ -18,41 +19,52 @@
     <script src="js/vendor/picturefill.min.js" async></script>
 </head>
 <body>
-  <header>
-  <p>Logo</p>
-  </header>
 
-  <div class="start-container">
-    <h1>Start page</h1>
-    <a href="" class="start">start</a>
-  </div>
 
-  <div class="quiz-container"><!-- content goes in here --></div>
-  <!-- /container -->
-  <div class="end-container">
-    <h1>End page</h1>
-    <a href="">Begin again</a>
-    <a href="">Another link</a>
-  </div>
+  <div class="start-container wrapper"><!-- start goes in here --></div>
+
+  <div class="quiz-container wrapper"><!-- quiz goes in here --></div>
+
+  <div class="end-container wrapper"><!-- end goes in here --></div>
+
+  <script id="start-template" type="text/x-handlebars-template">
+  {{#each start}}
+    <h1>{{heading}}</h1>
+    <img src="img/{{image}}" alt="{{heading}}">
+    <p>{{format description}}</p>
+    <a href="" class="start btn">{{startbuttontext}}</a>
+  {{/each}}
+  </script>
+
   <script id="question-template" type="text/x-handlebars-template">
-    {{#each Questions}}
-      <div class="box clearfix" id="{{@index}}">
-        <p class="counter">{{@index}} of XX</p>
+    {{#each questions}}
+      <div class="box clearfix">
         <div class="content clearfix">
-          <h2>{{heading}}</h2>
+          <h1><span class="counter">Stage {{math @index "+" 1}} of {{../questions.length}}</span>{{heading}}</h1>
           <p>{{format description}}</p>
         </div>
-        <img class="feature" src="img/{{foreground}}" class="clearfix">
+      
         <div class="question clearfix">
+        <h3>Question {{math @index "+" 1}}</h3>
         <p>{{question}}</p>
         <div class="answers">
           <a href="" data-response="">{{answer1}}</a>
-          <a href="" data-response="{{response2}}">{{answer2}}</a>
-          <a href="" data-response="{{response3}}">{{answer3}}</a>
+          <a href="" class="fancybox" data-response="{{response2}}">{{answer2}}</a>
+          <a href="" class="fancybox" data-response="{{response3}}">{{answer3}}</a>
         </div>
       </div>
+      <img class="feature" src="img/{{image}}" class="clearfix">
     </div> <!-- //box -->
     {{/each}}
+  </script>
+
+  <script id="end-template" type="text/x-handlebars-template">
+  {{#each end}}
+    <h1>{{heading}}</h1>
+    <img src="img/{{image}}" alt="{{heading}}">
+    <p>{{format description}}</p>
+    <a class="restart btn">{{restartbuttontext}}</a>
+  {{/each}}
   </script>
 
   <script src="js/vendor/jquery-1.11.1.min.js"></script>
@@ -63,6 +75,17 @@
   <!--<script src="js/templates/templates.js"></script> -->
   <script type="text/javascript" src="fancybox.source/jquery.fancybox.js?v=2.1.5"></script>
   <script src="js/main.min.js"></script>
+
+  <script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-36470764-18', 'auto');
+  ga('send', 'pageview');
+
+  </script>
 
 
   </body>
