@@ -93,31 +93,41 @@ textarea {
    ========================================================================== */
 // settings ////////////////////////////////////////
 
+// layout
+@gutter: 20px;
+
+
+
+
+@headingColour: rgb(254,209,23);
 @mainTextColor: white;
 @overlayColour: rgba(0,0,0,.9); // overlay colour //
-@startImageWidth: 250px; // logo or home start page image //
-@endImageWidth: 250px; // logo or home start page image //
-@btnBgrnd: orange; //
-@btnTextcolor: white; //
+@startImageWidth: 500px; // logo or home start page image //
+@endImageWidth: 500px; // logo or home start page image //
+@btnBg: rgb(254,209,23);
+@btnBgHover: rgb(254,209,23);  //
+@btnTextcolor: black; //
 
-.button(@btnBgrnd: orange, @btnTextColor: white){
+.button(@btnBg: @btnBg, @btnTextColor: white){
     font-family: venera700, helvetica, arial;
+    font-weight: 700;
     font-size: .75em;
     line-height: 1.5em;
-    background-color: @btnBgrnd;
+    background-color: @btnBg;
     color: @btnTextcolor;
     display: block;
     text-decoration: none;
-    padding: .666em 1em;
+    padding: @gutter;
     .rounded(10px);
     box-sizing: border-box;
     transition: all .333s;
 }
 
+
 body{
 	color: @mainTextColor;
 	margin: 0;
-	padding: 0;
+	padding: 0 0 2em 0;
     background-color: black;
 }
 
@@ -139,7 +149,7 @@ h1, h2, h3{
     font-weight: 700;
     line-height: 1;
     text-align: center;
-    color: orange;
+    color: @headingColour;
 }
 
 h1{
@@ -191,13 +201,15 @@ h3{
 
 .start-container{
     img{
-        width: @startImageWidth;
+        width: 100%;
+        max-width: @startImageWidth;
     }
 }
 
 .end-container{
     img{
-        width: @endImageWidth;
+        width: 100%;
+        max-width: @endImageWidth;
     }
 }
 
@@ -207,9 +219,9 @@ h3{
 
 .content{
 	margin: 0 auto 1em auto;
-    padding: 0 1em;
+    padding: 0 @gutter;
     box-sizing: border-box;
-    .rounded(10px);
+    .rounded;
     background-color: @overlayColour;
 }
 
@@ -220,27 +232,29 @@ h3{
 }
 
 .feature{
-    display: none;
+    display: block;
+    margin: 1em auto;
 	float: none;
     width: 100%;
+    max-width: 400px;
 }
 
 .question{
     box-sizing: border-box;
-    .rounded(10px);
+    .rounded;
     background-color:@overlayColour;
-	margin: 0 auto 1em auto;
-    padding: 0 1em;
+	margin: 0 auto @gutter auto;
+    padding: 0 @gutter;
 	float: none;
 }
 
 .answers a, .answers a:link, .answers a:visited, .answers a:focus, .answers a:active{
     .button;
-	margin: 1em 0;
+	margin: @gutter 0;
 }
 
 .answers a:hover{
-    .button(red);
+    .button(rgb(242,19,29));
 }
 
 .fancybox-inner {
@@ -269,7 +283,8 @@ h3{
     .feature{
         display: block;
         float: right;
-        width: 40%;
+        width: 50%;
+        max-width: 500px;
     }
 
     .question{
